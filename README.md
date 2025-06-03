@@ -52,10 +52,10 @@ ATTENTION: You must select the Gradle task:
 ./gradlew --info bootRun
 ```
 
-### To render the `Hello World!` response
+### To render the `Hello World!` messasge response
 
-```http request
-http://localhost:8080/index.do
+```shell
+curl --verbose "http://localhost:8080/api/v1/helloworld"
 ```
 
 ### To create a realease (only Rubens Gomes)

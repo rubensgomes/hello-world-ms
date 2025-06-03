@@ -1,0 +1,9 @@
+############################ test ###########################################
+spring:
+logging:
+  level:
+    com.rubensgomes.helloworld: "trace"
+    org.springframework: "info"
+local:
+  server:
+    port: 8080

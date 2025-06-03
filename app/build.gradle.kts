@@ -88,11 +88,12 @@ tasks.named<BootRun>("bootRun") {
 
 dependencies {
   // ########## compileOnly ####################################################
-  compileOnly("jakarta.servlet:jakarta.servlet-api")
 
   // ########## implementation #################################################
   implementation("org.springframework.boot:spring-boot-starter-web")
-  implementation("org.apache.commons:commons-lang3")
+  implementation(ctlg.swagger.annotations)
+  implementation(ctlg.jakarta.validation.api)
+
   // required by Spring Boot:
   implementation(ctlg.kotlin.reflect)
   implementation(ctlg.kotlin.stdlib)
@@ -102,9 +103,15 @@ dependencies {
   providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
   providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
-  // ########## runtimeOnly ####################################################
-  runtimeOnly("org.springframework.boot:spring-boot-devtools")
+  // ########## developmentOnly #################################################
+  developmentOnly("org.springframework.boot:spring-boot-devtools")
 
   // ########## testImplementation #############################################
   testImplementation("org.springframework.boot:spring-boot-starter-test")
+  // required to mock function returns (e.g., every {...}) during unit testing
+  testImplementation(ctlg.mockk)
+  // required to mock Spring Beans (e.g., @MockBean) during unit testing
+  testImplementation(ctlg.springmockk)
+  // required jakarta API validation engine during unit testing
+  testImplementation(ctlg.bundles.jakarta.bean.validator)
 }
