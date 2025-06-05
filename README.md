@@ -17,25 +17,25 @@ A basic Kotlin Spring Boot microservice.
 ./gradlew --info clean
 ```
 
-### To run Spotless static analysis
-
 ```shell
 ./gradlew :app:spotlessApply
 ```
 
-### To run unit tests
+```shell
+./gradlew --info build
+```
 
 ```shell
 ./gradlew --info check
 ```
 
-### To assemble a Spring Boot war
+```shell
+./gradlew --info jar
+```
 
 ```shell
 ./gradlew --info assemble
 ```
-
-### To create a Spring Boot executable war
 
 ```shell
 ./gradlew --info bootWar
@@ -61,5 +61,8 @@ curl --verbose "http://localhost:8080/api/v1/helloworld"
 ### To create a realease (only Rubens Gomes)
 
 ```shell
+# only Rubens can release
 ./gradlew --info release
 ```
+---
+Author:  [Rubens Gomes](https://rubensgomes.com/)

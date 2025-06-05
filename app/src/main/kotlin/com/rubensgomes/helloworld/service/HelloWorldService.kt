@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service
  * A very simple service class that responds with a "Hello World!" message response.
  *
  * This class uses the following patterns:
- *
  * - it returns a model response type [MessageResponse]
  * - it separates front-end web layer and back-end business domain layer
  *

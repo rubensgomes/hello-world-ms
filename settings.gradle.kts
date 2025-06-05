@@ -1,3 +1,7 @@
+
+rootProject.name = "hello-world-ms"
+include("app")
+
 plugins {
     // Apply the foojay-resolver plugin to allow automatic download of JDKs
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
@@ -7,18 +11,19 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
 
-        // Rubens personal maven repository
         maven {
             url = uri("https://repo.repsy.io/mvn/rubensgomes/default/")
+            credentials {
+                username = System.getProperty("repsyUsername")
+                password = System.getProperty("repsyPassword")
+            }
         }
     }
 
     versionCatalogs {
         create("ctlg") {
-            from("com.rubensgomes:gradle-catalog:0.0.36")
+            from("com.rubensgomes:gradle-catalog:0.0.37")
         }
     }
 }
 
-rootProject.name = "hello-world-ms"
-include("app")

@@ -2,6 +2,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
   id("idea")
+  id("maven-publish")
   id("version-catalog")
   id("war")
   alias(ctlg.plugins.kotlin.jvm)
@@ -12,12 +13,20 @@ plugins {
   alias(ctlg.plugins.spring.dependency.management)
 }
 
+val developerId: String by project
+val developerName: String by project
+
 val group: String by project
+val artifact: String by project
 val version: String by project
+val title: String by project
+val description: String by project
 
 project.group = group
 
 project.version = version
+
+project.description = description
 
 idea {
   module {
@@ -34,6 +43,8 @@ java {
     vendor.set(JvmVendorSpec.AMAZON)
   }
 }
+
+configurations { compileOnly { extendsFrom(configurations.annotationProcessor.get()) } }
 
 kotlin {
   compilerOptions {
@@ -60,6 +71,66 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
   }
 }
 
+publishing {
+  publications {
+    val developerEmail: String by project
+
+    val scmConnection: String by project
+    val scmUrl: String by project
+
+    val license: String by project
+    val licenseUrl: String by project
+
+    create<MavenPublication>("maven") {
+      groupId = project.group.toString()
+      artifactId = artifact
+      version = project.version.toString()
+
+      from(components["java"])
+
+      pom {
+        name = title
+        description = project.description
+        inceptionYear = "2024"
+        packaging = "jar"
+
+        licenses {
+          license {
+            name = license
+            url = licenseUrl
+          }
+        }
+        developers {
+          developer {
+            id = developerId
+            name = developerName
+            email = developerEmail
+          }
+        }
+        scm {
+          connection = scmConnection
+          developerConnection = scmConnection
+          url = scmUrl
+        }
+      }
+    }
+  }
+
+  repositories {
+    val repsyUrl: String by project
+    val repsyUsername: String by project
+    val repsyPassword: String by project
+
+    maven {
+      url = uri(repsyUrl)
+      credentials {
+        username = repsyUsername
+        password = repsyPassword
+      }
+    }
+  }
+}
+
 // "net.researchgate.release" configuration
 release {
   with(git) {
@@ -68,7 +139,23 @@ release {
   }
 }
 
-configurations { compileOnly { extendsFrom(configurations.annotationProcessor.get()) } }
+// net.researchgate.release plugin task
+tasks.afterReleaseBuild { dependsOn("publish") }
+
+tasks.jar {
+  manifest {
+    attributes(
+        mapOf(
+            "Specification-Title" to title,
+            "Implementation-Title" to artifact,
+            "Implementation-Version" to project.version,
+            "Implementation-Vendor" to developerName,
+            "Built-By" to developerId,
+            "Build-Jdk" to System.getProperty("java.home"),
+            "Created-By" to
+                "${System.getProperty("java.version")} (${System.getProperty("java.vendor")})"))
+  }
+}
 
 tasks.named<Test>("test") {
   // Use JUnit Platform for unit tests.
