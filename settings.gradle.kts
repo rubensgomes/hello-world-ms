@@ -1,5 +1,5 @@
 
-rootProject.name = "hello-world-ms"
+rootProject.name = "helloworld-ms"
 include("app")
 
 plugins {
@@ -13,10 +13,6 @@ dependencyResolutionManagement {
 
         maven {
             url = uri("https://repo.repsy.io/mvn/rubensgomes/default/")
-            credentials {
-                username = System.getProperty("repsyUsername")
-                password = System.getProperty("repsyPassword")
-            }
         }
     }
 

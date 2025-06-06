@@ -4,7 +4,6 @@ plugins {
   id("idea")
   id("maven-publish")
   id("version-catalog")
-  id("war")
   alias(ctlg.plugins.kotlin.jvm)
   alias(ctlg.plugins.kotlin.spring)
   alias(ctlg.plugins.release)
@@ -71,66 +70,6 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
   }
 }
 
-publishing {
-  publications {
-    val developerEmail: String by project
-
-    val scmConnection: String by project
-    val scmUrl: String by project
-
-    val license: String by project
-    val licenseUrl: String by project
-
-    create<MavenPublication>("maven") {
-      groupId = project.group.toString()
-      artifactId = artifact
-      version = project.version.toString()
-
-      from(components["java"])
-
-      pom {
-        name = title
-        description = project.description
-        inceptionYear = "2024"
-        packaging = "jar"
-
-        licenses {
-          license {
-            name = license
-            url = licenseUrl
-          }
-        }
-        developers {
-          developer {
-            id = developerId
-            name = developerName
-            email = developerEmail
-          }
-        }
-        scm {
-          connection = scmConnection
-          developerConnection = scmConnection
-          url = scmUrl
-        }
-      }
-    }
-  }
-
-  repositories {
-    val repsyUrl: String by project
-    val repsyUsername: String by project
-    val repsyPassword: String by project
-
-    maven {
-      url = uri(repsyUrl)
-      credentials {
-        username = repsyUsername
-        password = repsyPassword
-      }
-    }
-  }
-}
-
 // "net.researchgate.release" configuration
 release {
   with(git) {
@@ -138,9 +77,6 @@ release {
     requireBranch.set("main")
   }
 }
-
-// net.researchgate.release plugin task
-tasks.afterReleaseBuild { dependsOn("publish") }
 
 tasks.jar {
   manifest {
@@ -186,12 +122,9 @@ dependencies {
   implementation(ctlg.kotlin.stdlib)
   implementation(ctlg.jackson.module.kotlin)
 
-  // ########## providedRuntime ################################################
-  providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
-  providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-
   // ########## developmentOnly #################################################
   developmentOnly("org.springframework.boot:spring-boot-devtools")
+  developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
   // ########## testImplementation #############################################
   testImplementation("org.springframework.boot:spring-boot-starter-test")

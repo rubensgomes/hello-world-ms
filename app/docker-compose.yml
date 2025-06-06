@@ -1,0 +1,14 @@
+#
+# author : Rubens Gomes
+# purpose: docker compose configuration file for helloworld-ms
+#
+services:
+  helloworld-ms:
+    # VERSION is defined in the local .env file
+    image: rubensgomes/helloworld-ms:${VERSION}
+    container_name: helloworld-ms
+    hostname: helloworld
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=local

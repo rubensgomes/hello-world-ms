@@ -1,17 +1,16 @@
-# hello-world-ms 
+# hello-world-ms
+
 A basic Kotlin Spring Boot microservice.
 
 - Requires Java LTS 21 or greater.
 
-## Display Java Tools Installed
+## Display Java tools installed
 
 ```shell
 ./gradlew -q javaToolchains
 ```
 
-## Clean, Lint, Test, Assemble, Release
-
-### To clean local build
+## Clean, lint, test, and assemble
 
 ```shell
 ./gradlew --info clean
@@ -22,47 +21,106 @@ A basic Kotlin Spring Boot microservice.
 ```
 
 ```shell
-./gradlew --info build
-```
-
-```shell
 ./gradlew --info check
 ```
 
 ```shell
-./gradlew --info jar
+./gradlew --info bootJar
 ```
 
-```shell
-./gradlew --info assemble
-```
+## Build and push docker image
 
-```shell
-./gradlew --info bootWar
-```
+- to build a docker image:
 
-### To run the Spring Boot webapp from IntelliJ
+  ```shell
+  # must add the version being built below
+  version="0.0.3"
+  cd app
 
-ATTENTION: You must select the Gradle task:
-- `strutsapp > Tasks > application > bootRun`
+  printf "building image using version: %s\n" "${version}"
+  docker image build \
+    --build-arg "VERSION=${version}" \
+    --tag "rubensgomes/helloworld-ms:${version}" \
+    . || exit
+  ```
 
-### To run the Spring Boot webapp from the CLI
+- to push docker image:
 
-```shell
-./gradlew --info bootRun
-```
+  ```shell
+  # only Rubens can push images below
+  printf "signing in to DockerHub\n"
+  docker login --username "rubensgomes" || exit
+  ```
 
-### To render the `Hello World!` messasge response
+  ```shell
+  # must add the version being built below
+  version="0.0.3"
+  printf "pushing image to DockerHub\n"
+  docker image push "rubensgomes/helloworld-ms:${version}"
+  ```
 
-```shell
-curl --verbose "http://localhost:8080/api/v1/helloworld"
-```
+- To remove image from local registry:
 
-### To create a realease (only Rubens Gomes)
+  ```shell
+  version="0.0.3"
+  printf "removing image from local registry\n"
+  docker image rm "rubensgomes/helloworld-ms:${version}"
+  ```
+
+## Start and stop using docker compose
+
+- Start docker container:
+
+  ```shell
+  cd app
+  docker compose up --detach --no-recreate --remove-orphans || {
+    printf "failed to stop container.\n" >&2
+    sleep 5   
+  }
+  ```
+
+- Stop docker container:
+
+  ```shell
+  cd app
+  docker compose down --remove-orphans || {
+    printf "failed to stop container.\n" >&2
+    sleep 5
+  }
+  ```
+
+- To render the `Hello World!` messasge:
+
+  ```shell
+  curl --verbose "http://localhost:8080/api/v1/helloworld"
+  ```
+
+### Start and stop using bootRun
+
+- Start using "bootRun":
+
+  ```shell
+  ./gradlew --info bootRun
+  ```
+
+- Stop "bootRun"
+
+  ```shell
+  ./gradlew --stop
+  ```
+
+- To render the `Hello World!` messasge:
+
+  ```shell
+  curl --verbose "http://localhost:8080/api/v1/helloworld"
+  ```
+
+### To create a release
 
 ```shell
 # only Rubens can release
 ./gradlew --info release
 ```
+
 ---
 Author:  [Rubens Gomes](https://rubensgomes.com/)

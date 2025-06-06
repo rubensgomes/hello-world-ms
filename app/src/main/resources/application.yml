@@ -2,14 +2,17 @@
 ## https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data
 spring:
   application:
-    name: "hello-world-ms"
-
+    name: "helloworld-ms"
+  # disable docker-compose up when running ./gradlew bootRun
+  docker:
+    compose:
+      lifecycle-management: none
 ## --------------- >>> logging (begin) <<< -------------------------------------
 logging:
   group:
     tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat"
   level:
-    com.rubensgomes.helloworld: "info"
+    com.rubensgomes.helloworld: "trace"
     root: "error"
     tomcat: "warn"
     # spring boot "logging.group.web"
