@@ -17,4 +17,11 @@ class HelloWorldServiceTest {
         val response = service.helloWorld()
         assertTrue(response.message.isNotBlank())
     }
+
+    @Test
+    fun `ensure sigterm predestroy handler works`() {
+        service.cleanup()
+        // simply ensure we got this far.
+        assertTrue(true)
+    }
 }

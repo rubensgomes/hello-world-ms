@@ -1,6 +1,7 @@
 package com.rubensgomes.helloworld.service
 
 import com.rubensgomes.helloworld.model.response.MessageResponse
+import jakarta.annotation.PreDestroy
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -20,6 +21,11 @@ class HelloWorldService {
         log.trace("helloWorld()")
         // this is where business domain layer would be called from.
         return MessageResponse("Hello World!")
+    }
+
+    @PreDestroy
+    fun cleanup() {
+        log.info("I am being terminated.")
     }
 
     internal companion object {

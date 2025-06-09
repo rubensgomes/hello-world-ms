@@ -1,5 +1,6 @@
 package com.rubensgomes.helloworld.model.response
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 
 /**
@@ -9,7 +10,7 @@ import jakarta.validation.constraints.NotBlank
  * @constructor Creates a
  */
 class MessageResponse(
-    @field:NotBlank(message = "message cannot be blank") val message: String,
+    @field:Valid @field:NotBlank(message = "message cannot be blank") val message: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -4,11 +4,17 @@ plugins {
   id("idea")
   id("maven-publish")
   id("version-catalog")
+  // org.jetbrains.kotlin.jvm
   alias(ctlg.plugins.kotlin.jvm)
+  // org.jetbrains.kotlin.plugin.spring
   alias(ctlg.plugins.kotlin.spring)
+  // net.researchgate.release
   alias(ctlg.plugins.release)
+  // com.diffplug.spotless
   alias(ctlg.plugins.spotless)
+  // org.springframework.boot
   alias(ctlg.plugins.spring.boot)
+  // io.spring.dependency-management
   alias(ctlg.plugins.spring.dependency.management)
 }
 
@@ -114,13 +120,21 @@ dependencies {
 
   // ########## implementation #################################################
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-validation")
+  // io.swagger.core.v3:swagger-annotations
   implementation(ctlg.swagger.annotations)
+  // jakarta.validation:jakarta.validation-api
   implementation(ctlg.jakarta.validation.api)
 
-  // required by Spring Boot:
+  // org.jetbrains.kotlin:kotlin-reflect
+  //   -  required by Spring Boot to introspect the code  at runtime
   implementation(ctlg.kotlin.reflect)
+  // org.jetbrains.kotlin:kotlin-stdlib
   implementation(ctlg.kotlin.stdlib)
-  implementation(ctlg.jackson.module.kotlin)
+  // com.fasterxml.jackson.module:jackson-module-kotlin
+  //  - used to serialize/de-serialize kotlin object
+  //   * not used in this project
+  //  implementation(ctlg.jackson.module.kotlin)
 
   // ########## developmentOnly #################################################
   developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -128,10 +142,12 @@ dependencies {
 
   // ########## testImplementation #############################################
   testImplementation("org.springframework.boot:spring-boot-starter-test")
-  // required to mock function returns (e.g., every {...}) during unit testing
+  // io.mockk:mockk
+  //   - mock function (e.g., every {...}) during unit testing
   testImplementation(ctlg.mockk)
-  // required to mock Spring Beans (e.g., @MockBean) during unit testing
+  // com.ninja-squad:springmockk
+  //   - mock Spring Beans (e.g., @MockBean) during unit testing
   testImplementation(ctlg.springmockk)
-  // required jakarta API validation engine during unit testing
+  // bundle engine that implements the jakarta API validation
   testImplementation(ctlg.bundles.jakarta.bean.validator)
 }
