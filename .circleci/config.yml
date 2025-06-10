@@ -1,42 +1,60 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:java:.,tool:gradle:
+---
 version: 2.1
-jobs:
-  test-java:
+
+parameters:
+  action:
+    type: enum
+    enum:
+      - build-test
+    default: build-test
+
+  ######################  executors  #############################################
+
+executors:
+
+  amd64_docker_executor:
+    description: >
+      An AMD64 CPU architecture cimg/base executor image.
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/base:2025.06
+    resource_class: large
+
+  jdk21_executor:
+    description: >
+      A Java 21 VM executor.
+    docker:
+      - image: cimg/openjdk:21.0
+    resource_class: large
+
+######################  jobs  ##################################################
+
+jobs:
+
+  ####################  build-test-job  #######################################
+  ##
+  build-test-job:
+    description: >
+      Job to run linter, build, and unit test.
+    executor: jdk21_executor
     steps:
       - checkout
       - run:
-          name: Calculate cache key
-          command: |-
-            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
-                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
-      - restore_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
-      - run:
-          command: ./gradlew check
-      - store_test_results:
-          path: build/test-results
-      - save_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
-          paths:
-            - ~/.gradle/caches
-      - store_artifacts:
-          path: build/reports
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Build and run unit tests
+          command: |
+            ./gradlew :app:spotlessCheck  || {
+              printf "run ./gradlew :app:spotlessApply\n" >&2
+              exit 1
+            }
+            ./gradlew --info check
+
+######################  workflows  #############################################
+
 workflows:
-  build-and-test:
+
+  ####################  build-test-workflow  ###################################
+  ##
+  build-test-workflow:
+    when:
+      equal: [build-test, << pipeline.parameters.action >>]
     jobs:
-      - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
+      - build-test-job
