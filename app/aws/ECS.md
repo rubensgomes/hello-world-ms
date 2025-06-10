@@ -19,3 +19,6 @@ This file describes how to set up an ECS to have tasks running docker containers
    ```
    
 8. [Learn how to create an Amazon ECS Linux task for the Fargate launch type](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started-fargate.html)
+9. [Creating Amazon ECS resources using the AWS CDK](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/tutorial-ecs-web-server-cdk.html)
+10. [Set up to use Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/get-set-up-for-amazon-ecs.html)
+11. [Amazon ECS task definition parameters for the Fargate launch type](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#container_definition_portmappings?icmpid=docs_ecs_hp-task-definition)

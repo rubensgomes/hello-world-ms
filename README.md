@@ -1,4 +1,4 @@
-# hello-world-ms
+# helloworld-ms
 
 A basic Kotlin Spring Boot microservice.
 

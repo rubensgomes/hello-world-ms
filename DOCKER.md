@@ -72,7 +72,7 @@ application to a local and remote Docker registry.
   ```shell
   # only Rubens can push images below
   printf "signing in to DockerHub\n"
-  docker login --username "rubensgomes" || {
+  docker login --username "rubensgomes" --password "${DOCKER_PAT}" || {
     printf "failed to login\n" >&2
     sleep 5
   }

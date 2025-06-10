@@ -7,7 +7,7 @@ import org.springframework.context.event.ContextClosedEvent
 import org.springframework.stereotype.Component
 
 /**
- * Handles SIGTERM events.
+ * Handles application shutdown to properly release resources.
  *
  * @author Rubens Gomes
  */
