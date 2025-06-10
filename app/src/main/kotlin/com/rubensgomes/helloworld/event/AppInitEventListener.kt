@@ -14,7 +14,6 @@ import java.net.InetAddress
  */
 @Component
 class AppInitEventListener : ApplicationListener<ServletWebServerInitializedEvent> {
-
     override fun onApplicationEvent(event: ServletWebServerInitializedEvent) {
         log.info("application started")
         val address: InetAddress = InetAddress.getLocalHost()
